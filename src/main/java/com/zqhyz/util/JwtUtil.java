@@ -62,14 +62,8 @@ public class JwtUtil {
         Algorithm algorithm = Algorithm.HMAC256(key);
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
         try {
-//            return jwtVerifier.verify(token);
             DecodedJWT verify = jwtVerifier.verify(token);
-//            if (this.isInvalidToken(verify.getId())) {
-//                // TODO 抛出自定义异常
-//                return null;
-//            }
             Map<String, Claim> claims = verify.getClaims();
-//            return new Date().after(claims.get("exp").asDate()) ? null : verify;
             String usernameOrTel = claims.get("name").asString();
             String redisJwt = template.opsForValue().get(Const.JWT_ACCOUNT + usernameOrTel);
             if (ObjectUtils.isEmpty(redisJwt) || (!token.equals(redisJwt))) {
